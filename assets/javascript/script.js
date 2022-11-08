@@ -1,52 +1,43 @@
 // Creating variables to store references to html elements
 var saveBtn = $(".saveBtn");
+var timeBlock = $(".time-block");
+var description = $(".description");
 
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-$(function () {
-  // TODO: Add a listener for click events on the save button. This code should
-  saveBtn.on("click", function () {
-    console.log("test");
+$(document).ready(function () {
+  // Created a event listener to listen if user clicks save
+  saveBtn.on("click", function (e) {
+    e.preventDefault();
   });
-  // use the id in the containing time-block as a key to save the user input in local storage.
-  // HINT: What does `this` reference in the click listener
-  // function?
-  // How can DOM traversal be used to get the "hour-x" id of the time-block containing the button that was clicked?
-  // How might the id be useful when saving the description in local storage?
-  //
-  // TODO: Add code to apply the past, present, or future class to each time
+  // Created a compare function that will compare each time block and set past, present, or future classes
   function compare() {
-    // var currentTime = dayjs().hour();
-    var currentTime = 12;
-    console.log(currentTime);
-
-    // console.log($("#hour"));
-    $(".time-block").each(function (index) {
-      index += 1;
-      console.log(index);
-      if (currentTime === index) {
+    // Created a variable to store the currentTime from dayjs
+    var currentTime = dayjs().hour();
+    // Created an empty array to store each hour value
+    var hourArray = [];
+    // Created two undefined variables to store new and old hour value
+    var hourOld, hourNew;
+    // Created a for each loop to iterate over each timeBlock
+    timeBlock.each(function (index) {
+      // Assigning a value to the hourOld variable (the id of each timeBlock Ex. hour-9)
+      hourOld = $(this).attr("id");
+      // Assigning a value to the hourNew variable (removing the hour- string from the id)
+      hourNew = Number(hourOld.replace("hour-", ""));
+      // Created an if statement to check if the time is past, present, or future
+      if (hourNew < currentTime) {
+        // If hourNew is less than currentTime add past class
+        $(this).addClass("past");
+      } else if (hourNew > currentTime) {
+        // If hourNew is greater than currentTime add future class
+        $(this).addClass("future");
+      } else {
+        // If hourNew not greater than or less than add present class
         $(this).addClass("present");
       }
     });
   }
   compare();
-
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
-  //
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
   // TODO: Add code to display the current date in the header of the page.
   $("#currentDay").text(dayjs().format("dddd, MMM D"));
 });
-// console.log(dayjs());
-// Created variables to store the references of the html elements
 
-// for (let i = 0; i < array.length; i++) {
-//   const element = array[i];
-// }
+// Get an ID of an element jquery - https://www.tutorialrepublic.com/faq/how-to-get-the-id-of-an-element-using-jquery.php
