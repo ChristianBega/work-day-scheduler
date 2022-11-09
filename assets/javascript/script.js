@@ -1,20 +1,32 @@
 // Creating variables to store references to html elements
 var timeBlock = $(".time-block");
 
+// document.ready () - makes sure all html elements are loaded before calling function.
 $(document).ready(function () {
   // Created a event listener to listen if user clicks save
   $(".saveBtn").on("click", function () {
+    // Created a variable to store the parent id
+    //           this - represents the object being clicked on
+    //                .parent() - finds the parents of the object being clicked on.
+    //                         .attr() - target the id of the parent element
     var time = $(this).parent().attr("id");
+    // Created a variable to store the siblings with a class of .description
+    //           this - represents the object being clicked on
+    //                 .siblings () - finds the siblings of the object being clicked on with a class of .description
+    //                                          .val () - shows the value of the input
     var value = $(this).siblings(".description").val();
-    // Setting description to local storage
+    // Setting the time and value into local storage
     localStorage.setItem(time, value);
   });
-  // individual targeted time blocks
+  //              .each () - iterates over each element with a class of .time-block
   $(".time-block").each(function () {
+    // Created a variable to store the time blocks id
     var id = $(this).attr("id");
-    console.log(id);
-    // var description = $(this).children(".description").val();
     // backticks = template literals
+    //    passing in the id variable to grab any elements with the id.
+    //        .description - any element with the class of description
+    //                      .val () - setting the value of the textarea
+    //                                       .getItem () - grabbing the id key from local storage.
     $(`#${id} .description`).val(localStorage.getItem(`${id}`));
   });
 
@@ -46,9 +58,12 @@ $(document).ready(function () {
     });
   }
   compare();
-  getItem();
-  // TODO: Add code to display the current date in the header of the page.
+  // Grabbing the reference of currentDay and setting the text() to dayjs
+  //                    .dayjs() - provides a day js object
+  //                           .format () - formatting day js object
+  //                                  (day month date)
   $("#currentDay").text(dayjs().format("dddd, MMM D"));
 });
 
 // Get an ID of an element jquery - https://www.tutorialrepublic.com/faq/how-to-get-the-id-of-an-element-using-jquery.php
+//dayjs - https://day.js.org/
