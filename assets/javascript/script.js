@@ -1,13 +1,23 @@
 // Creating variables to store references to html elements
-var saveBtn = $(".saveBtn");
 var timeBlock = $(".time-block");
-var description = $(".description");
 
 $(document).ready(function () {
   // Created a event listener to listen if user clicks save
-  saveBtn.on("click", function (e) {
-    e.preventDefault();
+  $(".saveBtn").on("click", function () {
+    var time = $(this).parent().attr("id");
+    var value = $(this).siblings(".description").val();
+    // Setting description to local storage
+    localStorage.setItem(time, value);
   });
+  // individual targeted time blocks
+  $(".time-block").each(function () {
+    var id = $(this).attr("id");
+    console.log(id);
+    // var description = $(this).children(".description").val();
+    // backticks = template literals
+    $(`#${id} .description`).val(localStorage.getItem(`${id}`));
+  });
+
   // Created a compare function that will compare each time block and set past, present, or future classes
   function compare() {
     // Created a variable to store the currentTime from dayjs
@@ -36,6 +46,7 @@ $(document).ready(function () {
     });
   }
   compare();
+  getItem();
   // TODO: Add code to display the current date in the header of the page.
   $("#currentDay").text(dayjs().format("dddd, MMM D"));
 });
